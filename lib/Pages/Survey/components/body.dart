@@ -1,5 +1,10 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:green_field/Models/respondent.dart';
+import 'package:green_field/constants.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -8,39 +13,143 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   static List<Respondent> respondents = <Respondent>[
-    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592"),
-    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592"),
-    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592"),
-    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592"),
-    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592"),
-    Respondent("123", "123", "ABC", "0936287592")
+    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592", "1001", "Male"),
+    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592", "1001", "Male"),
+    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592", "1001", "Female"),
+    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592", "1001", "Male"),
+    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592", "1001", "Male"),
+    Respondent("123", "123", "ABC", "0936287592", "1001", "Male"),
+    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592", "1001", "Female"),
+    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592", "1001", "Male"),
+    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592", "1001", "Male"),
+    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592", "1001", "Female"),
+    Respondent("123", "123", "LÊ MINH TRÍ", "0936287592", "1001", "Male"),
+    Respondent("123", "123", "ABC", "0936287592", "1001", "Male")
   ];
   List<Respondent> searchRespondents = List.from(respondents);
   TextEditingController _textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: kPrimaryLightColor,
       child: Column(
         children: <Widget>[
-          Padding(
-              padding: EdgeInsets.all(2),
-              child: TextField(
-                controller: _textController,
-                decoration: InputDecoration(
-                  hintText: 'Search Text Here...',
-                ),
-                onChanged: onItemChanged,
-              )),
+          Container(
+            padding: EdgeInsets.all(2),
+            child: TextField(
+              controller: _textController,
+              decoration: InputDecoration(
+                hintText: 'Nhập tìm kiếm...',
+              ),
+              onChanged: onItemChanged,
+            ),
+          ),
           Expanded(child: getBody())
         ],
       ),
     );
   }
 
+  Widget _loader(BuildContext context, String url) {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget _error(BuildContext context, String url, dynamic error) {
+    print(error);
+    return const Center(child: Icon(Icons.error));
+  }
+
+  String url =
+      'https://images.unsplash.com/photo-1532264523420-881a47db012d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9';
   Widget _buildRow(Respondent respondent) {
-    return ListTile(
-      title: Text(respondent.respondentName),
-      trailing: Text(respondent.respondentPhoneNumber),
+    return Container(
+      padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: Column(
+        children: [
+          Divider(
+            height: 1.0,
+            thickness: 1.0,
+            color: Colors.black87,
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+            child: Row(
+              children: <Widget>[
+                ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl: url,
+                    fit: BoxFit.cover,
+                    placeholder: _loader,
+                    errorWidget: _error,
+                    width: 100,
+                    height: 100,
+                  ),
+                ),
+                Expanded(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: <Widget>[
+                        Icon(Icons.person),
+                        Expanded(
+                            child: Text(
+                          respondent.respondentName,
+                          style: TextStyle(
+                              fontSize: 15.0, fontWeight: FontWeight.normal),
+                        )),
+                        Icon(respondent.gender == "Male"
+                            ? FontAwesomeIcons.male
+                            : FontAwesomeIcons.female),
+                        Text(
+                          "1992",
+                          style: TextStyle(
+                              fontSize: 15.0, fontWeight: FontWeight.normal),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.phone),
+                        Text(
+                          respondent.respondentPhoneNumber,
+                          style: TextStyle(
+                              fontSize: 15.0, fontWeight: FontWeight.normal),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.gps_fixed),
+                        Expanded(
+                          child: Text(
+                              "55 đường số 9, phường phước bình, quận 9, thành phố hồ chí minh"
+                                  .toLowerCase()),
+                        ),
+                      ],
+                    ),
+                  ],
+                ))
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getRow() {
+    return Stack();
+  }
+
+  Widget _sizedContainer(Widget child) {
+    return SizedBox(
+      width: 50.0,
+      height: 50.0,
+      child: Center(child: child),
     );
   }
 

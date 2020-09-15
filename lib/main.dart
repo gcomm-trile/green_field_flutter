@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: 'login',
+      initialRoute: 'welcome',
       onGenerateRoute: FluroRouter.router.generator,
     );
   }
