@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Fancy Bottom Navigation"),
+        title: Text("Fancy Bottom xxxx"),
       ),
       body: Container(
         decoration: BoxDecoration(color: Colors.white),

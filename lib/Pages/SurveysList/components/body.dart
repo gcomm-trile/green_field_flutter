@@ -52,9 +52,10 @@ class Body extends StatelessWidget {
             margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
             decoration: BoxDecoration(
                 color: kPrimaryLightColor,
+                border: Border.all(color: Colors.blueAccent, width: 2.0),
                 borderRadius: BorderRadius.circular(20)),
             child: Container(
-                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

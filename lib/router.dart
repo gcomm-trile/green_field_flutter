@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart' as ModularRouter;
 import 'package:flutter/material.dart';
 import 'package:green_field/Pages/Home/home_page.dart';
+import 'package:green_field/Pages/Interview/questionnaire_page.dart';
 import 'package:green_field/Pages/Login/login_page.dart';
 import 'package:green_field/Pages/Signup/signup_page.dart';
 import 'package:green_field/Pages/Survey/survey_page.dart';
@@ -21,9 +22,13 @@ class FluroRouter {
   static ModularRouter.Handler _signupHandler = ModularRouter.Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           SignUpPage());
+  static ModularRouter.Handler _questionnaireHandler = ModularRouter.Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+          QuestionnairePage());
   static ModularRouter.Handler _homeHandler = ModularRouter.Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           HomePage());
+
   static ModularRouter.Handler _surveysListHandler = ModularRouter.Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           SurveysListPage(username: params['username'][0]));
@@ -42,6 +47,9 @@ class FluroRouter {
 
     router.define('login',
         handler: _loginHandler,
+        transitionType: ModularRouter.TransitionType.inFromBottom);
+    router.define('questionnaire',
+        handler: _questionnaireHandler,
         transitionType: ModularRouter.TransitionType.inFromBottom);
     router.define('signup',
         handler: _signupHandler,
