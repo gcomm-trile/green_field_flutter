@@ -1,3 +1,5 @@
+import 'package:scoped_model/scoped_model.dart';
+
 class QuestionaireStructureRoot {
   String status;
   List<Structure> structure;
@@ -215,7 +217,7 @@ class Structure {
   }
 }
 
-class Answer {
+class Answer extends Model {
   String answerText;
   String answerTextLink;
   int answerIndex;
@@ -227,7 +229,7 @@ class Answer {
   bool isRandom;
   String meanScore;
   String t2BorB2B;
-
+  bool isSelected = false;
   Answer(
       {this.answerText,
       this.answerTextLink,
@@ -269,6 +271,11 @@ class Answer {
     data['MeanScore'] = this.meanScore;
     data['T2BorB2B'] = this.t2BorB2B;
     return data;
+  }
+
+  void updateChecked(bool checkedStatus) {
+    isSelected = checkedStatus;
+    notifyListeners();
   }
 }
 

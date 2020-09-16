@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:green_field/Models/questionnaire.dart';
+import 'package:green_field/Pages/Questionnaire/components/question.dart';
 import 'package:green_field/constants.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:http/http.dart' as http;
@@ -72,7 +73,7 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
     setState(() {
       if (!isLastQuestion) {
         currentQuestion++;
-        isLastQuestion = currentQuestion == 5 ? true : false;
+        isLastQuestion = currentQuestion == 100 ? true : false;
         isFirstQuestion = currentQuestion == 0 ? true : false;
       }
     });
@@ -107,9 +108,12 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
 
   Widget bodySection(QuestionaireStructureRoot questionaireStructureRoot) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Expanded(
-          child: mainSection(questionaireStructureRoot),
+        Question(
+          questionaireStructure:
+              questionaireStructureRoot.structure[currentQuestion],
         ),
         Container(
             padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
