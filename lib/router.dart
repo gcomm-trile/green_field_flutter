@@ -1,7 +1,7 @@
 import 'package:fluro/fluro.dart' as ModularRouter;
 import 'package:flutter/material.dart';
 import 'package:green_field/Pages/Home/home_page.dart';
-import 'package:green_field/Pages/Interview/questionnaire_page.dart';
+import 'package:green_field/Pages/Questionnaire/questionnaire_page.dart';
 import 'package:green_field/Pages/Login/login_page.dart';
 import 'package:green_field/Pages/Signup/signup_page.dart';
 import 'package:green_field/Pages/Survey/survey_page.dart';
