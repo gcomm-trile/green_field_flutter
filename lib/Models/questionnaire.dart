@@ -68,7 +68,7 @@ class QuestionaireStructureRoot {
   }
 }
 
-class Structure {
+class Structure extends Model {
   int questionTypeID;
   String questionCode;
   String questionNameHTMLText;
@@ -214,6 +214,11 @@ class Structure {
     data['GridRow_NumberOfRow2RepeatHeader'] =
         this.gridRowNumberOfRow2RepeatHeader;
     return data;
+  }
+
+  void updateQuestionNameHTMLText(String value) {
+    this.questionNameHTMLText = value;
+    notifyListeners();
   }
 }
 

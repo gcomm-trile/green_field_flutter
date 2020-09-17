@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:green_field/Models/questionnaire.dart';
+import 'package:green_field/Pages/Questionnaire/components/body.dart';
+import 'package:green_field/Pages/Questionnaire/components/input_question.dart';
 import 'package:green_field/Pages/Questionnaire/components/question.dart';
 import 'package:green_field/constants.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
@@ -30,6 +32,15 @@ Future<QuestionaireStructureRoot> fetchAlbum() async {
   }
 }
 
+Widget get lv {
+  return ListView.builder(
+    itemCount: 100,
+    itemBuilder: (context, index) {
+      return Text("item $index");
+    },
+  );
+}
+
 class _QuestionnairePageState extends State<QuestionnairePage> {
   bool isLastQuestion = false;
   bool isFirstQuestion = true;
@@ -37,21 +48,79 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
   @override
   Widget build(BuildContext context) {
     return KeyboardDismisser(
-        child: Scaffold(
-            appBar: AppBar(title: const Text("Bảng câu hỏi X")),
-            backgroundColor: kPrimaryLightColor,
-            body: FutureBuilder<QuestionaireStructureRoot>(
-              future: questionaireStructure,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return bodySection(snapshot.data);
-                } else if (snapshot.hasError) {
-                  return Text("${snapshot.error}");
-                }
-                // By default, show a loading spinner.
-                return Center(child: CircularProgressIndicator());
-              },
-            )));
+        child: SafeArea(
+            child: Scaffold(
+                // appBar: AppBar(title: const Text("Bảng câu hỏi X")),
+                backgroundColor: kPrimaryLightColor,
+                body: FutureBuilder<QuestionaireStructureRoot>(
+                  future: questionaireStructure,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(children: <Widget>[
+                        Text("header", style: TextStyle(fontSize: 40)),
+                        Expanded(
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: 100,
+                                itemBuilder: (context, index) {
+                                  return Text("item $index",
+                                      style: TextStyle(fontSize: 20));
+                                })),
+                        Text("footer", style: TextStyle(fontSize: 40)),
+                      ]);
+                      // Column(children: <Widget>[
+                      //   SingleChildScrollView(
+                      //       child: Expanded(
+                      //     child: Row(
+                      //       children: [
+                      //         Text("header"),
+                      //         ListView.builder(
+                      //           shrinkWrap: true,
+                      //           itemCount: 100,
+                      //           itemBuilder: (context, index) {
+                      //             return Text("item $index");
+                      //           },
+                      //         )
+                      //       ],
+                      //     ),
+                      //   )),
+                      //   Text("footer")
+                      // ]);
+
+                      // bodySection(snapshot.data);
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    // By default, show a loading spinner.
+                    return Center(child: CircularProgressIndicator());
+                  },
+                ))));
+  }
+
+  Widget get footerSection {
+    return Container(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+        child: Row(
+          children: <Widget>[
+            RaisedButton(
+              color: kPrimaryColor,
+              onPressed: pressBack,
+              child: new Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+            ),
+            Expanded(child: SizedBox()),
+            RaisedButton(
+              color: kPrimaryColor,
+              onPressed: pressNext,
+              child: new Icon(
+                Icons.arrow_forward,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ));
   }
 
   Future<QuestionaireStructureRoot> questionaireStructure;
@@ -93,92 +162,5 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
 
   void saveFunc() {
     log("click save $currentQuestion");
-  }
-
-  Widget mainSection(QuestionaireStructureRoot questionaireStructureRoot) {
-    switch (
-        questionaireStructureRoot.structure[currentQuestion].questionTypeID) {
-      case 1:
-        return getSA(questionaireStructureRoot, currentQuestion);
-        break;
-      default:
-        return Center(child: Text("Hello"));
-    }
-  }
-
-  Widget bodySection(QuestionaireStructureRoot questionaireStructureRoot) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Question(
-          questionaireStructure:
-              questionaireStructureRoot.structure[currentQuestion],
-        ),
-        Container(
-            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-            child: Row(
-              children: <Widget>[
-                RaisedButton(
-                  color: kPrimaryColor,
-                  onPressed: pressBack,
-                  child: new Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                ),
-                Expanded(child: SizedBox()),
-                RaisedButton(
-                  color: kPrimaryColor,
-                  onPressed: pressNext,
-                  child: new Icon(
-                    isLastQuestion ? Icons.check : Icons.arrow_forward,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ))
-      ],
-    );
-  }
-
-  bool rememberMe = false;
-
-  void _onRememberMeChanged(bool newValue) => setState(() {
-        rememberMe = newValue;
-
-        if (rememberMe) {
-          // TODO: Here goes your functionality that remembers the user.
-        } else {
-          // TODO: Forget the user
-        }
-      });
-  Widget getSA(QuestionaireStructureRoot questionaireStructureRoot,
-      int currentQuestion) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Html(
-            data: questionaireStructureRoot
-                .structure[currentQuestion].questionNameHTMLText),
-        Expanded(
-            child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                    children: [
-                      Checkbox(value: true, onChanged: _onRememberMeChanged),
-                      Text(questionaireStructureRoot.structure[currentQuestion]
-                              .answer[index].answerText +
-                          "")
-                    ],
-                  );
-                },
-                itemCount: questionaireStructureRoot
-                    .structure[currentQuestion].answer.length))
-      ],
-    );
   }
 }

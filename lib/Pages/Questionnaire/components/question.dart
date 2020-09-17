@@ -10,13 +10,6 @@ class Question extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Column(
-      children: [
-        HtmlLabel(questionaireStructure.questionNameHTMLText),
-        InputQuestion(questionaireStructure),
-        HtmlLabel(questionaireStructure.questionNameHTMLTextFooter),
-      ],
-    ));
+    return InputQuestion(questionaireStructure);
   }
 }
